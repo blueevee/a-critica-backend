@@ -2,8 +2,10 @@
 
 one:
   name: MyString
-  adress: MyString
+  address: MyString
+  background_image: MyString
 
 two:
   name: MyString
-  adress: MyString
+  address: MyString
+  background_image: MyString

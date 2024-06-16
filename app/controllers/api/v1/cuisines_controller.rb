@@ -14,8 +14,13 @@ class Api::V1::CuisinesController < ApplicationController
         if cuisine.save
           render json: {message: "Cuisine was added successfully!", data: cuisine}, status: :created
         else
-          render json: cuisine.errors, status: :unprocessable_entity
+          render json: cuisine.errors, status: :unprocessable_content
         end
+      end
+
+      def destroy
+        cuisine = Cuisine.find(params[:id])
+        cuisine.destroy
       end
 
       private
