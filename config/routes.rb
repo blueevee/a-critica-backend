@@ -6,7 +6,11 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :cuisines, only: [:index, :create, :destroy]
       resources :restaurants
+      resources :reviews, only: [:create] do
+        resources :review_images, only: [:index, :create, :destroy]
+      end
       resources :restaurant_cuisines, only: [:create, :show]
+      post 'new_review', to: 'new_review#create'
       delete 'restaurant_cuisines', to: 'restaurant_cuisines#destroy'
     end
   end

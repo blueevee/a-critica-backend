@@ -19,7 +19,7 @@ class Api::V1::RestaurantCuisinesController < ApplicationController
         restaurant_cuisines = RestaurantCuisine.where(restaurant_id: params[:id])
         cuisines = restaurant_cuisines.map { |rc| rc.cuisine.cuisine_name }
         render json: cuisines
-      end
+    end
 
     private
 
