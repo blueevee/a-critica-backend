@@ -3,12 +3,25 @@ class Api::V1::RestaurantsController < ApplicationController
   before_action :set_restaurant, only: [:update]
 
     def index
-        restaurants = Restaurant.all
-        if restaurants
-          render json: restaurants, status: :ok
-        else
-          render json: restaurants.errors, status: :bad_request
-        end
+      restaurants = Restaurant.all.includes(:reviews)
+      # , :restaurant_cuisines)
+
+      restaurants_with_details = restaurants.map do |restaurant|
+        {
+          id: restaurant.id,
+          name: restaurant.name,
+          address: restaurant.address,
+          reviews: restaurant.reviews.count,
+          # cuisines: restaurant.restaurant_cuisines.map { |rc| rc.cuisine.cuisine_name },
+          background_image: restaurant.background_image
+        }
+      end
+
+      if restaurants_with_details
+        render json: restaurants_with_details, status: :ok
+      else
+        render json: { error: 'Não foi possível recuperar os restaurantes' }, status: :bad_request
+      end
     end
 
     def create
@@ -29,7 +42,7 @@ class Api::V1::RestaurantsController < ApplicationController
         handle_cuisines(@restaurant, restaurants_params[:cuisines])
         render json: {message: "Restaurant was updated successfully!", data: @restaurant}, status: :ok
       else
-        render json: @restaurant.errors, status: :unprocessable_entity
+        render json: @restaurant.errors, status: :unprocessable_content
       end
     end
 
