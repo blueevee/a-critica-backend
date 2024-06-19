@@ -8,7 +8,7 @@ class Api::V1::ReviewImagesController < ApplicationController
     if @review_image.save
       render json: @review_image, status: :created
     else
-      render json: @review_image.errors, status: :unprocessable_entity
+      render json: @review_image.errors, status: :unprocessable_content
     end
   end
 

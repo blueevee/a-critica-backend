@@ -7,7 +7,7 @@ class Api::V1::RestaurantCuisinesController < ApplicationController
       if @restaurant_cuisine.save
         render json: @restaurant_cuisine, status: :created
       else
-        render json: @restaurant_cuisine.errors, status: :unprocessable_entity
+        render json: @restaurant_cuisine.errors, status: :unprocessable_content
       end
     end
 
