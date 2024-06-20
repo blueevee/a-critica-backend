@@ -3,7 +3,7 @@ class Api::V1::NewReviewController < ApplicationController
 
   def create
     ActiveRecord::Base.transaction do
-      if review_params[:restaurant][:id].present?
+      if review_params[:restaurant][:id] > 0
         restaurant = Restaurant.find(review_params[:restaurant][:id])
         update_restaurant_if_needed(restaurant, review_params[:restaurant])
       else

@@ -37,13 +37,41 @@ class Api::V1::RestaurantsController < ApplicationController
 
     def update
       if @restaurant.update(restaurants_params.except(:cuisines))
-        puts 'MEU PUTSSSS '
-        puts restaurants_params
         handle_cuisines(@restaurant, restaurants_params[:cuisines])
         render json: {message: "Restaurant was updated successfully!", data: @restaurant}, status: :ok
       else
         render json: @restaurant.errors, status: :unprocessable_content
       end
+    end
+
+    def show
+      restaurant = Restaurant.find(params[:id])
+      restaurant_details = {
+        restaurant: {
+          address: restaurant.address,
+          id: restaurant.id,
+          background_image: restaurant.background_image,
+          name: restaurant.name
+        },
+        reviews: restaurant.reviews.map do |review|
+          {
+            visit_date: review.visit_date,
+            pseudonym: review.pseudonym,
+            comment: review.comment,
+            rating: review.rating,
+            images: review.review_images.map(&:image_url),
+            bill: review.detailed_bills.map do |bill|
+              {
+                item_description: bill.item_description,
+                amount: bill.amount,
+                price: bill.price
+              }
+            end
+          }
+        end
+      }
+
+      render json: restaurant_details, status: :ok
     end
 
     private
