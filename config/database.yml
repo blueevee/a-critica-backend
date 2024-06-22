@@ -68,6 +68,6 @@ test:
 #
 production:
   <<: *default
-  database: a_critica_backend_production
-  username: a_critica_backend
-  password: <%= ENV["A_CRITICA_BACKEND_DATABASE_PASSWORD"] %>
+  database: <%= ENV['DATABASE_NAME'] %>
+  username: <%= ENV['DATABASE_USERNAME'] %>
+  password: <%= ENV['DATABASE_PASSWORD'] %>
