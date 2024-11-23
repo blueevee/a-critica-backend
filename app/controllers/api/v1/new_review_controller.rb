@@ -7,7 +7,7 @@ class Api::V1::NewReviewController < ApplicationController
         restaurant = Restaurant.find(review_params[:restaurant][:id])
         update_restaurant_if_needed(restaurant, review_params[:restaurant])
       else
-        restaurant = Restaurant.create!(review_params[:restaurant].except(:cuisines))
+        restaurant = Restaurant.create!(review_params[:restaurant].except(:id, :cuisines))
         handle_cuisines(restaurant, review_params[:restaurant][:cuisines])
       end
 
@@ -20,10 +20,10 @@ class Api::V1::NewReviewController < ApplicationController
           review.detailed_bills.create!(bill_item)
         end
       end
-    end
-    rescue ActiveRecord::RecordInvalid => e
+  end
+  rescue ActiveRecord::RecordInvalid => e
       render json: { errors: e.record.errors.full_messages }, status: :unprocessable_content
-    end
+  end
 
   private
 
